@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import model.Achievement;
 import model.HelperFactory;
@@ -37,8 +39,8 @@ public class AchievementActivity extends AppCompatActivity {
         seriesTest.setText(String.valueOf(achievement.getSeriesTest()));
         double perc;
         if (achievement.getNumberOfCorrectAnswers() == 0 && achievement.getNumberOfWrongAnswers() == 0) perc = 0;
-        else perc = (double) achievement.getNumberOfCorrectAnswers() / (achievement.getNumberOfCorrectAnswers() + achievement.getNumberOfWrongAnswers()) * 100;
-        percentage.setText(String.valueOf(perc).substring(0, 4).concat("%"));
+        perc = (double) achievement.getNumberOfCorrectAnswers() / (achievement.getNumberOfCorrectAnswers() + achievement.getNumberOfWrongAnswers()) * 100;
+        percentage.setText(String.valueOf(new BigDecimal(perc).setScale(1, RoundingMode.HALF_UP).doubleValue()).concat("%"));
         Button back = findViewById(R.id.back);
         MediaPlayer click = MediaPlayer.create(this, R.raw.click);
         back.setOnClickListener(v -> {

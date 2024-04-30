@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             Achievement achievement = HelperFactory.getHelper().getAchievementDAO().queryForFirst();
             if (achievement == null) {
                 achievement = new Achievement(Calendar.getInstance().getTime(), 0, 0, 0);
-                TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Questions.class);
+                TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Achievement.class);
                 HelperFactory.getHelper().getAchievementDAO().create(achievement);
             }
         } catch (SQLException e) {
