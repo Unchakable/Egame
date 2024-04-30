@@ -9,26 +9,26 @@ public class Achievement {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.DATE)
+    @DatabaseField(canBeNull = false)
     private Date date;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER, columnName = "number_of_correct_answer")
+    @DatabaseField(canBeNull = false, columnName = "number_of_correct_answer")
     private int numberOfCorrectAnswers;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER, columnName = "number_of_wrong_answer")
+    @DatabaseField(canBeNull = false, columnName = "number_of_wrong_answer")
     private int numberOfWrongAnswers;
 
-    @DatabaseField(columnName = "series_test", canBeNull = true)
+    @DatabaseField(columnName = "series_test", canBeNull = false)
     private int seriesTest;
 
-
     public Achievement() {
-
     }
+
     public Achievement(Date date, int numberOfCorrectAnswers, int numberOfWrongAnswers, int seriesTest) {
         this.date = date;
         this.numberOfCorrectAnswers = numberOfCorrectAnswers;
         this.numberOfWrongAnswers = numberOfWrongAnswers;
+        this.seriesTest = seriesTest;
     }
 
     public int getId() {

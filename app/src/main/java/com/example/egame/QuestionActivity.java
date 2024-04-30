@@ -1,6 +1,7 @@
 package com.example.egame;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import controllers.MainController;
+import model.Achievement;
 import model.HelperFactory;
 import model.Questions;
 
@@ -28,6 +30,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     MediaPlayer click, right, wrong;
     Questions questions;
+    Achievement achievement;
 
 
     @Override
@@ -43,6 +46,7 @@ public class QuestionActivity extends AppCompatActivity {
         HelperFactory.setHelper(getApplicationContext());
         List<Questions> notUsedQuestions;
         try {
+            achievement = HelperFactory.getHelper().getAchievementDAO().queryForFirst();
             notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
             if (notUsedQuestions.isEmpty()) {
                 notUsedQuestions = MainController.getQuestions();
@@ -57,7 +61,6 @@ public class QuestionActivity extends AppCompatActivity {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         TextView question = findViewById(R.id.question);
         Button answer1 = findViewById(R.id.answer1);
         Button answer2 = findViewById(R.id.answer2);
@@ -101,7 +104,6 @@ public class QuestionActivity extends AppCompatActivity {
                 }
             } while (i != idSet.size() - 1);
         }
-
         answer1.setOnClickListener(v -> answerOnClick(String.valueOf(answer1.getText())));
 
         answer2.setOnClickListener(v -> answerOnClick(String.valueOf(answer2.getText())));
@@ -109,13 +111,23 @@ public class QuestionActivity extends AppCompatActivity {
         answer3.setOnClickListener(v -> answerOnClick(String.valueOf(answer3.getText())));
 
         answer4.setOnClickListener(v -> answerOnClick(String.valueOf(answer4.getText())));
+
     }
 
     private void answerOnClick(String answer) {
         if (answer.equals(questions.getRightAnswer())) {
             right.start();
+            achievement.setNumberOfCorrectAnswers(achievement.getNumberOfCorrectAnswers() + 1);
         } else {
+            achievement.setNumberOfWrongAnswers(achievement.getNumberOfWrongAnswers() + 1);
             wrong.start();
+        }
+        try {
+            HelperFactory.setHelper(getApplicationContext());
+            HelperFactory.getHelper().getAchievementDAO().update(achievement);
+            HelperFactory.releaseHelper();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         Intent intent = new Intent(QuestionActivity.this, AnswerActivity.class);
         intent.putExtra("decision", questions.getDecision());
@@ -132,4 +144,9 @@ public class QuestionActivity extends AppCompatActivity {
         return randomId;
     }
 
+    @Override
+    protected void onStop() {
+        HelperFactory.releaseHelper();
+        super.onStop();
+    }
 }

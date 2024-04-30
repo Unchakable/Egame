@@ -1,5 +1,6 @@
 package com.example.egame;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 import java.util.List;
 import controllers.MainController;
+import model.Achievement;
 import model.HelperFactory;
 import model.Questions;
 
@@ -38,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < notUsedQuestions.size(); i++) {
                     HelperFactory.getHelper().getQuestionsDAO().create(notUsedQuestions.get(i));
                 }
+            }
+            Achievement achievement = HelperFactory.getHelper().getAchievementDAO().queryForFirst();
+            if (achievement == null) {
+                achievement = new Achievement(Calendar.getInstance().getTime(), 0, 0, 0);
+                TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Questions.class);
+                HelperFactory.getHelper().getAchievementDAO().create(achievement);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

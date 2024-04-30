@@ -28,7 +28,7 @@
             android:gravity="center"
             android:text="@string/question"
             android:textColor="@color/blue"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/answer1"
