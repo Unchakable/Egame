@@ -1,0 +1,21 @@
+<resources>
+    <string name="appName">Egame</string>
+    <string name="explanation">Мобильное приложение для подготовки к единому государственному экзамену по информатике</string>
+    <string name="startTest">НАЧАТЬ ТЕСТ</string>
+    <string name="achievements">ДОСТИЖЕНИЯ</string>
+    <string name="exit">ВЫХОД</string>
+    <string name="question">Сколько бит в 1 байте?</string>
+    <string name="answer1">16</string>
+    <string name="answer2">8</string>
+    <string name="answer3">4</string>
+    <string name="answer4">24</string>
+    <string name="decision">В одном бите 8 байт</string>
+    <string name="rightAnswerTitle">ПРАВИЛЬНЫЙ ОТВЕТ:</string>
+    <string name="rightAnswer">8</string>
+    <string name="endTest">ЗАКОНЧИТЬ ТЕСТ</string>
+    <string name="farther">ДАЛЬШЕ</string>
+    <string name="seriesTestTitle">СЕРИЯ ЕЖЕДНЕВНЫХ ТЕСТИРОВАНИЙ:</string>
+    <string name="percentageTitle">ПРОЦЕНТ ПРАВИЛЬНЫХ ОТВЕТОВ</string>
+    <string name="back">НАЗАД</string>
+    <string name="zero">0</string>
+</resources>
