@@ -13,6 +13,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.j256.ormlite.stmt.query.In;
+
 public class AnswerActivity extends AppCompatActivity {
 
     @Override
@@ -30,6 +32,10 @@ public class AnswerActivity extends AppCompatActivity {
         TextView rightAnswer = findViewById(R.id.rightAnswer);
         Button endTest = findViewById(R.id.endTest);
         Button farther = findViewById(R.id.farther);
+        Intent intent = getIntent();
+        decision.setText(intent.getStringExtra("decision"));
+        rightAnswer.setText(intent.getStringExtra("rightAnswer"));
+
 
         endTest.setOnClickListener(new View.OnClickListener() {
             @Override

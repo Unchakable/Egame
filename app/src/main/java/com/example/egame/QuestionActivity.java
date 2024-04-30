@@ -26,8 +26,9 @@ import model.Questions;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    String rightAnswer;
     MediaPlayer click, right, wrong;
+    Questions questions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,6 @@ public class QuestionActivity extends AppCompatActivity {
         });
         HelperFactory.setHelper(getApplicationContext());
         List<Questions> notUsedQuestions;
-        Questions questions;
         try {
             notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
             if (notUsedQuestions.isEmpty()) {
@@ -70,7 +70,6 @@ public class QuestionActivity extends AppCompatActivity {
         click = MediaPlayer.create(this, R.raw.click);
         right = MediaPlayer.create(this, R.raw.right);
         wrong = MediaPlayer.create(this, R.raw.wrong);
-        rightAnswer = questions.getRightAnswer();
         question.setText(questions.getQuestion());
         List<String> listAnswer = Arrays.asList(questions.getRightAnswer(), questions.getRowAnswer1(), questions.getRowAnswer2(), questions.getRowAnswer3());
         Set<Integer> idSet = new HashSet<>();
@@ -113,12 +112,14 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void answerOnClick(String answer) {
-        if (answer.equals(rightAnswer)) {
+        if (answer.equals(questions.getRightAnswer())) {
             right.start();
         } else {
             wrong.start();
         }
         Intent intent = new Intent(QuestionActivity.this, AnswerActivity.class);
+        intent.putExtra("decision", questions.getDecision());
+        intent.putExtra("rightAnswer", questions.getRightAnswer());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
