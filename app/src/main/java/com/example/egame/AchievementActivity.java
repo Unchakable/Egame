@@ -1,19 +1,15 @@
 package com.example.egame;
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.sql.SQLException;
-
 import model.Achievement;
 import model.HelperFactory;
 

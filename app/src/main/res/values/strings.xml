@@ -15,7 +15,7 @@
     <string name="endTest">ЗАКОНЧИТЬ ТЕСТ</string>
     <string name="farther">ДАЛЬШЕ</string>
     <string name="seriesTestTitle">СЕРИЯ ЕЖЕДНЕВНЫХ ТЕСТИРОВАНИЙ:</string>
-    <string name="percentageTitle">ПРОЦЕНТ ПРАВИЛЬНЫХ ОТВЕТОВ</string>
+    <string name="percentageTitle">ПРОЦЕНТ ПРАВИЛЬНЫХ ОТВЕТОВ:</string>
     <string name="back">НАЗАД</string>
     <string name="zero">0</string>
 </resources>

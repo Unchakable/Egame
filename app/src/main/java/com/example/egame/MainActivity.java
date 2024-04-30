@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         startTest.setSoundEffectsEnabled(false);
         achievements.setSoundEffectsEnabled(false);
         exit.setSoundEffectsEnabled(false);
-        List<Questions> finalNotUsedQuestions = notUsedQuestions;
         startTest.setOnClickListener(v ->
         {
             click.start();
