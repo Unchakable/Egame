@@ -1,20 +1,25 @@
 package com.example.egame;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import com.j256.ormlite.table.TableUtils;
+
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import controllers.MainController;
 import model.Achievement;
 import model.HelperFactory;
@@ -25,6 +30,7 @@ public class QuestionActivity extends AppCompatActivity {
     MediaPlayer click, right, wrong;
     Questions questions;
     Achievement achievement;
+    int counter, numberRightAnswer, numberWrongAnswer;
 
 
     @Override
@@ -37,6 +43,12 @@ public class QuestionActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent intent = getIntent();
+        counter = intent.getIntExtra("counter", 0) + 1;
+        numberRightAnswer = intent.getIntExtra("numberRightAnswer", 0);
+        numberWrongAnswer = intent.getIntExtra("numberWrongAnswer", 0);
+
         HelperFactory.setHelper(getApplicationContext());
         List<Questions> notUsedQuestions;
         try {
@@ -112,9 +124,11 @@ public class QuestionActivity extends AppCompatActivity {
         if (answer.equals(questions.getRightAnswer())) {
             right.start();
             achievement.setNumberOfCorrectAnswers(achievement.getNumberOfCorrectAnswers() + 1);
+            numberRightAnswer++;
         } else {
-            achievement.setNumberOfWrongAnswers(achievement.getNumberOfWrongAnswers() + 1);
             wrong.start();
+            achievement.setNumberOfWrongAnswers(achievement.getNumberOfWrongAnswers() + 1);
+            numberWrongAnswer++;
         }
         try {
             HelperFactory.setHelper(getApplicationContext());
@@ -126,6 +140,9 @@ public class QuestionActivity extends AppCompatActivity {
         Intent intent = new Intent(QuestionActivity.this, AnswerActivity.class);
         intent.putExtra("decision", questions.getDecision());
         intent.putExtra("rightAnswer", questions.getRightAnswer());
+        intent.putExtra("counter", counter);
+        intent.putExtra("numberRightAnswer", numberRightAnswer);
+        intent.putExtra("numberWrongAnswer", numberWrongAnswer);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

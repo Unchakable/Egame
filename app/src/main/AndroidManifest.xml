@@ -11,16 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Egame"
+        android:screenOrientation="portrait"
         tools:targetApi="31">
         <activity
-            android:name=".AnswerActivity"
+            android:name=".ResultTestActivity"
             android:exported="false" />
+        <activity
+            android:name=".AnswerActivity"
+            android:exported="false"
+            />
         <activity
             android:name=".QuestionActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".AchievementActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -18,4 +18,9 @@
     <string name="percentageTitle">ПРОЦЕНТ ПРАВИЛЬНЫХ ОТВЕТОВ:</string>
     <string name="back">НАЗАД</string>
     <string name="zero">0</string>
+    <string name="resultTest">РЕЗУЛЬТАТ ТЕСТИРОВАНИЯ</string>
+    <string name="counter">ОБЩЕЕ КОЛИЧЕСТВО ВОПРОСОВ:</string>
+    <string name="numberRightAnswer">КОЛИЧЕСТВО ПРАВИЛЬНЫХ ОТВЕТОВ:</string>
+    <string name="numberWrongAnswer">КОЛИЧЕСТВО НЕПРАВИЛЬНЫХ ОТВЕТОВ:</string>
+    <string name="ok">ГОТОВО</string>
 </resources>

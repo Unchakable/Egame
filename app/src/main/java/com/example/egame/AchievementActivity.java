@@ -39,7 +39,7 @@ public class AchievementActivity extends AppCompatActivity {
         seriesTest.setText(String.valueOf(achievement.getSeriesTest()));
         double perc;
         if (achievement.getNumberOfCorrectAnswers() == 0 && achievement.getNumberOfWrongAnswers() == 0) perc = 0;
-        perc = (double) achievement.getNumberOfCorrectAnswers() / (achievement.getNumberOfCorrectAnswers() + achievement.getNumberOfWrongAnswers()) * 100;
+        else perc = (double) achievement.getNumberOfCorrectAnswers() / (achievement.getNumberOfCorrectAnswers() + achievement.getNumberOfWrongAnswers()) * 100;
         percentage.setText(String.valueOf(new BigDecimal(perc).setScale(1, RoundingMode.HALF_UP).doubleValue()).concat("%"));
         Button back = findViewById(R.id.back);
         MediaPlayer click = MediaPlayer.create(this, R.raw.click);

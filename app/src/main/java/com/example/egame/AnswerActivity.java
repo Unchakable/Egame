@@ -16,6 +16,7 @@ import model.Achievement;
 import model.HelperFactory;
 
 public class AnswerActivity extends AppCompatActivity {
+    int counter, numberRightAnswer, numberWrongAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,9 @@ public class AnswerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         decision.setText(intent.getStringExtra("decision"));
         rightAnswer.setText(intent.getStringExtra("rightAnswer"));
+        counter = intent.getIntExtra("counter", 0);
+        numberRightAnswer = intent.getIntExtra("numberRightAnswer", 0);
+        numberWrongAnswer = intent.getIntExtra("numberWrongAnswer", 0);
         endTest.setOnClickListener(v -> {
             try {
                 HelperFactory.setHelper(getApplicationContext());
@@ -43,7 +47,7 @@ public class AnswerActivity extends AppCompatActivity {
                 else {
                     Date lastDate = achievement.getDate();
                     Date now = Calendar.getInstance().getTime();
-                    int diff = (int) (now.getTime() - lastDate.getTime())/ 86400000;
+                    int diff = (int) (now.getTime() - lastDate.getTime()) / 86400000;
                     if (diff == 1) achievement.setSeriesTest(achievement.getSeriesTest() + 1);
                     if (diff > 1) achievement.setSeriesTest(1);
                 }
@@ -52,17 +56,32 @@ public class AnswerActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             click.start();
-            Intent intentEndTest = new Intent(AnswerActivity.this, MainActivity.class);
-            intentEndTest.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intentEndTest);
+            endTestOnclick();
         });
 
         farther.setOnClickListener(v -> {
             click.start();
-            Intent intentFarther = new Intent(AnswerActivity.this, QuestionActivity.class);
-            intentFarther.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intentFarther);
+            if (counter == 10) endTestOnclick();
+            else fartherOnClick();
         });
+    }
+
+    private void endTestOnclick() {
+        Intent intent = new Intent(AnswerActivity.this, ResultTestActivity.class);
+        intent.putExtra("counter", counter);
+        intent.putExtra("numberRightAnswer", numberRightAnswer);
+        intent.putExtra("numberWrongAnswer", numberWrongAnswer);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    private void fartherOnClick() {
+        Intent intent = new Intent(AnswerActivity.this, QuestionActivity.class);
+        intent.putExtra("counter", counter);
+        intent.putExtra("numberRightAnswer", numberRightAnswer);
+        intent.putExtra("numberWrongAnswer", numberWrongAnswer);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     @Override
