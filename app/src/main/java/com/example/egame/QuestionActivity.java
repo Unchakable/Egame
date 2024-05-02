@@ -3,8 +3,10 @@ package com.example.egame;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.j256.ormlite.table.TableUtils;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,17 +24,17 @@ import java.util.List;
 import java.util.Set;
 
 import controllers.MainController;
-import model.Achievement;
+import model.Achievements;
+import model.Result;
 import model.HelperFactory;
 import model.Questions;
 
 public class QuestionActivity extends AppCompatActivity {
-
     MediaPlayer click, right, wrong;
     Questions questions;
-    Achievement achievement;
-    int counter, numberRightAnswer, numberWrongAnswer;
-
+    Result result;
+    int counter, numberRightAnswer, numberWrongAnswer, numberRightAnswerAchievement;
+    long timer, timerTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +47,43 @@ public class QuestionActivity extends AppCompatActivity {
             return insets;
         });
 
+        MediaPlayer ach = MediaPlayer.create(this, R.raw.ach);
         Intent intent = getIntent();
         counter = intent.getIntExtra("counter", 0) + 1;
         numberRightAnswer = intent.getIntExtra("numberRightAnswer", 0);
         numberWrongAnswer = intent.getIntExtra("numberWrongAnswer", 0);
-
+        numberRightAnswerAchievement = intent.getIntExtra("numberRightAnswerAchievement", 0);
+        timer = intent.getLongExtra("timer", 0);
+        if (timer == 0) timer = System.currentTimeMillis();
+        BigDecimal bg = new BigDecimal(timer);
+        if (new BigDecimal(System.currentTimeMillis()).subtract(bg).compareTo(new BigDecimal(3600000)) >= 0)
+        {
+            try {
+                List<Achievements> achievementsList = HelperFactory.getHelper().getAchievementsDAO().queryForEq("name", "КРЕМЕНЬ!");
+                Achievements achievement = achievementsList.get(0);
+                if (!achievement.isUnlocked()){
+                    achievement.setUnlocked(true);
+                    HelperFactory.getHelper().getAchievementsDAO().update(achievement);
+                    Toast toast = Toast.makeText(this, "Разблокировано достижение ".concat(achievement.getName()), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    ach.start();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        timerTest = intent.getLongExtra("timerTest", 0);
+        if (timerTest == 0) timerTest = System.currentTimeMillis();
+        bg = new BigDecimal(timerTest);
+        if (new BigDecimal(System.currentTimeMillis()).subtract(bg).compareTo(new BigDecimal(10000)) >= 0) {
+            timerTest = System.currentTimeMillis();
+            numberRightAnswerAchievement = 0;
+        }
         HelperFactory.setHelper(getApplicationContext());
         List<Questions> notUsedQuestions;
         try {
-            achievement = HelperFactory.getHelper().getAchievementDAO().queryForFirst();
+            result = HelperFactory.getHelper().getResultDAO().queryForFirst();
             notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
             if (notUsedQuestions.isEmpty()) {
                 notUsedQuestions = MainController.getQuestions();
@@ -79,6 +110,8 @@ public class QuestionActivity extends AppCompatActivity {
         click = MediaPlayer.create(this, R.raw.click);
         right = MediaPlayer.create(this, R.raw.right);
         wrong = MediaPlayer.create(this, R.raw.wrong);
+        TextView counterTextView = findViewById(R.id.counterQuestion);
+        counterTextView.setText(String.valueOf(counter).concat("/10"));
         question.setText(questions.getQuestion());
         List<String> listAnswer = Arrays.asList(questions.getRightAnswer(), questions.getRowAnswer1(), questions.getRowAnswer2(), questions.getRowAnswer3());
         Set<Integer> idSet = new HashSet<>();
@@ -117,22 +150,25 @@ public class QuestionActivity extends AppCompatActivity {
         answer3.setOnClickListener(v -> answerOnClick(String.valueOf(answer3.getText())));
 
         answer4.setOnClickListener(v -> answerOnClick(String.valueOf(answer4.getText())));
-
     }
 
     private void answerOnClick(String answer) {
         if (answer.equals(questions.getRightAnswer())) {
             right.start();
-            achievement.setNumberOfCorrectAnswers(achievement.getNumberOfCorrectAnswers() + 1);
+            result.setNumberOfCorrectAnswers(result.getNumberOfCorrectAnswers() + 1);
             numberRightAnswer++;
+            numberRightAnswerAchievement++;
+
         } else {
             wrong.start();
-            achievement.setNumberOfWrongAnswers(achievement.getNumberOfWrongAnswers() + 1);
+            result.setNumberOfWrongAnswers(result.getNumberOfWrongAnswers() + 1);
             numberWrongAnswer++;
+            timerTest = System.currentTimeMillis();
+            numberRightAnswerAchievement = 0;
         }
         try {
             HelperFactory.setHelper(getApplicationContext());
-            HelperFactory.getHelper().getAchievementDAO().update(achievement);
+            HelperFactory.getHelper().getResultDAO().update(result);
             HelperFactory.releaseHelper();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -143,6 +179,9 @@ public class QuestionActivity extends AppCompatActivity {
         intent.putExtra("counter", counter);
         intent.putExtra("numberRightAnswer", numberRightAnswer);
         intent.putExtra("numberWrongAnswer", numberWrongAnswer);
+        intent.putExtra("timer", timer);
+        intent.putExtra("timerTest", timerTest);
+        intent.putExtra("numberRightAnswerAchievement", numberRightAnswerAchievement);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
@@ -153,6 +192,10 @@ public class QuestionActivity extends AppCompatActivity {
             randomId = min + (int) (Math.random() * max);
         } while (randomId < min || randomId > max);
         return randomId;
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     @Override

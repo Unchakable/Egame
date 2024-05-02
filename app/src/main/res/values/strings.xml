@@ -23,4 +23,7 @@
     <string name="numberRightAnswer">КОЛИЧЕСТВО ПРАВИЛЬНЫХ ОТВЕТОВ:</string>
     <string name="numberWrongAnswer">КОЛИЧЕСТВО НЕПРАВИЛЬНЫХ ОТВЕТОВ:</string>
     <string name="ok">ГОТОВО</string>
+    <string name="unknown">" ? "</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,6 +1,8 @@
 package controllers;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Achievements;
 import model.Questions;
 
 public class MainController {
@@ -105,5 +107,22 @@ public class MainController {
         questions = new Questions(question, decision, rightAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, inUsed);
         questionsList.add(questions);
         return questionsList;
+    }
+
+    public static List<Achievements> getAchievements(){
+        Achievements achievements;
+        List<Achievements> achievementsList = new ArrayList<>();
+        boolean isUnlocked = false;
+        achievements = new Achievements("РАБОТЯГА", isUnlocked);
+        achievementsList.add(achievements);
+        achievements = new Achievements("САПЕРОМ БУДЕШЬ", isUnlocked);
+        achievementsList.add(achievements);
+        achievements = new Achievements("КРЕМЕНЬ!", isUnlocked);
+        achievementsList.add(achievements);
+        achievements = new Achievements("ЛАС-ВЕГАС", isUnlocked);
+        achievementsList.add(achievements);
+        achievements = new Achievements("ПРОСТО СДАЙ ЕГЭ", isUnlocked);
+        achievementsList.add(achievements);
+        return achievementsList;
     }
 }

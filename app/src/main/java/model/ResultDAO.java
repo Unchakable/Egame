@@ -3,8 +3,8 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import java.sql.SQLException;
 
-public class AchievementDAO extends BaseDaoImpl<Achievement, Integer> {
-    protected AchievementDAO(ConnectionSource connectionSource, Class<Achievement> dataClass) throws SQLException {
+public class ResultDAO extends BaseDaoImpl<Result, Integer> {
+    protected ResultDAO(ConnectionSource connectionSource, Class<Result> dataClass) throws SQLException {
         super(connectionSource, dataClass);
     }
 }

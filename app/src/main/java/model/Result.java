@@ -1,11 +1,10 @@
 package model;
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
-@DatabaseTable(tableName = "achievement")
-public class Achievement {
+@DatabaseTable(tableName = "result")
+public class Result {
     @DatabaseField(generatedId = true)
     private int id;
 
@@ -21,10 +20,10 @@ public class Achievement {
     @DatabaseField(columnName = "series_test", canBeNull = false)
     private int seriesTest;
 
-    public Achievement() {
+    public Result() {
     }
 
-    public Achievement(Date date, int numberOfCorrectAnswers, int numberOfWrongAnswers, int seriesTest) {
+    public Result(Date date, int numberOfCorrectAnswers, int numberOfWrongAnswers, int seriesTest) {
         this.date = date;
         this.numberOfCorrectAnswers = numberOfCorrectAnswers;
         this.numberOfWrongAnswers = numberOfWrongAnswers;
