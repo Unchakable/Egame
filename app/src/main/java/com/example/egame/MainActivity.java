@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
         List<Questions> notUsedQuestions;
 
         try {
-            TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Questions.class);
-            TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Achievement.class);notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
+            notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
             if (notUsedQuestions.isEmpty()) {
                 notUsedQuestions = MainController.getQuestions();
                 TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Questions.class);

@@ -61,7 +61,24 @@ public class AnswerActivity extends AppCompatActivity {
 
         farther.setOnClickListener(v -> {
             click.start();
-            if (counter == 10) endTestOnclick();
+            if (counter == 10) {
+                try {
+                    HelperFactory.setHelper(getApplicationContext());
+                    Achievement achievement = HelperFactory.getHelper().getAchievementDAO().queryForFirst();
+                    if (achievement.getSeriesTest() == 0) achievement.setSeriesTest(1);
+                    else {
+                        Date lastDate = achievement.getDate();
+                        Date now = Calendar.getInstance().getTime();
+                        int diff = (int) (now.getTime() - lastDate.getTime()) / 86400000;
+                        if (diff == 1) achievement.setSeriesTest(achievement.getSeriesTest() + 1);
+                        if (diff > 1) achievement.setSeriesTest(1);
+                    }
+                    HelperFactory.getHelper().getAchievementDAO().update(achievement);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                endTestOnclick();
+            }
             else fartherOnClick();
         });
     }
