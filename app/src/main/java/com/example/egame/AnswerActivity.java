@@ -71,6 +71,7 @@ public class AnswerActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
+
         timerTest = intent.getLongExtra("timerTest", 0);
         numberRightAnswerAchievement = intent.getIntExtra("numberRightAnswerAchievement", 0);
         if (timerTest == 0) timerTest = System.currentTimeMillis();
@@ -92,19 +93,30 @@ public class AnswerActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
+
         TextView counterTextView = findViewById(R.id.counterAnswer);
         counterTextView.setText(String.valueOf(counter).concat("/10"));
+
         endTest.setOnClickListener(v -> {
             try {
                 HelperFactory.setHelper(getApplicationContext());
                 Result result = HelperFactory.getHelper().getResultDAO().queryForFirst();
-                if (result.getSeriesTest() == 0) result.setSeriesTest(1);
+                if (result.getSeriesTest() == 0) {
+                    result.setSeriesTest(1);
+                    result.setDate(Calendar.getInstance().getTime());
+                }
                 else {
                     Date lastDate = result.getDate();
                     Date now = Calendar.getInstance().getTime();
                     int diff = (int) (now.getTime() - lastDate.getTime()) / 86400000;
-                    if (diff == 1) result.setSeriesTest(result.getSeriesTest() + 1);
-                    if (diff > 1) result.setSeriesTest(1);
+                    if (diff == 1) {
+                        result.setSeriesTest(result.getSeriesTest() + 1);
+                        result.setDate(Calendar.getInstance().getTime());
+                    }
+                    if (diff > 1) {
+                        result.setSeriesTest(1);
+                        result.setDate(Calendar.getInstance().getTime());
+                    }
                 }
                 HelperFactory.getHelper().getResultDAO().update(result);
             } catch (SQLException e) {
@@ -120,13 +132,22 @@ public class AnswerActivity extends AppCompatActivity {
                 try {
                     HelperFactory.setHelper(getApplicationContext());
                     Result result = HelperFactory.getHelper().getResultDAO().queryForFirst();
-                    if (result.getSeriesTest() == 0) result.setSeriesTest(1);
+                    if (result.getSeriesTest() == 0) {
+                        result.setSeriesTest(1);
+                        result.setDate(Calendar.getInstance().getTime());
+                    }
                     else {
                         Date lastDate = result.getDate();
                         Date now = Calendar.getInstance().getTime();
                         int diff = (int) (now.getTime() - lastDate.getTime()) / 86400000;
-                        if (diff == 1) result.setSeriesTest(result.getSeriesTest() + 1);
-                        if (diff > 1) result.setSeriesTest(1);
+                        if (diff == 1) {
+                            result.setSeriesTest(result.getSeriesTest() + 1);
+                            result.setDate(Calendar.getInstance().getTime());
+                        }
+                        if (diff > 1) {
+                            result.setSeriesTest(1);
+                            result.setDate(Calendar.getInstance().getTime());
+                        }
                     }
                     HelperFactory.getHelper().getResultDAO().update(result);
                 } catch (SQLException e) {

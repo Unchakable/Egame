@@ -41,6 +41,7 @@ public class AchievementActivity extends AppCompatActivity {
             return insets;
         });
         HelperFactory.setHelper(getApplicationContext());
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels / 4;
@@ -70,6 +71,7 @@ public class AchievementActivity extends AppCompatActivity {
         FrameLayout takeTheTest = findViewById(R.id.takeTheTest);
         takeTheTest.setLayoutParams(params);
         ft.replace(R.id.takeTheTest, unknownAchievementFragment4);
+
         try {
             List<Achievements> achievementsList = HelperFactory.getHelper().getAchievementsDAO().queryForEq("is_unlocked", true);
             if (!achievementsList.isEmpty()) {

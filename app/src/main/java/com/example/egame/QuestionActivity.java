@@ -73,6 +73,7 @@ public class QuestionActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
         }
+
         timerTest = intent.getLongExtra("timerTest", 0);
         if (timerTest == 0) timerTest = System.currentTimeMillis();
         bg = new BigDecimal(timerTest);
@@ -80,14 +81,15 @@ public class QuestionActivity extends AppCompatActivity {
             timerTest = System.currentTimeMillis();
             numberRightAnswerAchievement = 0;
         }
+
         HelperFactory.setHelper(getApplicationContext());
         List<Questions> notUsedQuestions;
         try {
             result = HelperFactory.getHelper().getResultDAO().queryForFirst();
             notUsedQuestions = HelperFactory.getHelper().getQuestionsDAO().queryForEq("in_used", false);
             if (notUsedQuestions.isEmpty()) {
-                notUsedQuestions = MainController.getQuestions();
                 TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Questions.class);
+                notUsedQuestions = MainController.getQuestions();
                 for (int i = 0; i < notUsedQuestions.size(); i++) {
                     HelperFactory.getHelper().getQuestionsDAO().create(notUsedQuestions.get(i));
                 }
@@ -98,6 +100,7 @@ public class QuestionActivity extends AppCompatActivity {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         TextView question = findViewById(R.id.question);
         Button answer1 = findViewById(R.id.answer1);
         Button answer2 = findViewById(R.id.answer2);
@@ -113,6 +116,7 @@ public class QuestionActivity extends AppCompatActivity {
         TextView counterTextView = findViewById(R.id.counterQuestion);
         counterTextView.setText(String.valueOf(counter).concat("/10"));
         question.setText(questions.getQuestion());
+
         List<String> listAnswer = Arrays.asList(questions.getRightAnswer(), questions.getRowAnswer1(), questions.getRowAnswer2(), questions.getRowAnswer3());
         Set<Integer> idSet = new HashSet<>();
         for (int i = 0; i < listAnswer.size(); i++) {
@@ -143,6 +147,7 @@ public class QuestionActivity extends AppCompatActivity {
                 }
             } while (i != idSet.size() - 1);
         }
+
         answer1.setOnClickListener(v -> answerOnClick(String.valueOf(answer1.getText())));
 
         answer2.setOnClickListener(v -> answerOnClick(String.valueOf(answer2.getText())));

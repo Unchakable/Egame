@@ -58,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
                     HelperFactory.getHelper().getQuestionsDAO().create(notUsedQuestions.get(i));
                 }
             }
+
             Result result = HelperFactory.getHelper().getResultDAO().queryForFirst();
             if (result == null) {
                 result = new Result(Calendar.getInstance().getTime(), 0, 0, 0);
                 TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Result.class);
                 HelperFactory.getHelper().getResultDAO().create(result);
             }
+
             List<Achievements> achievementsList = HelperFactory.getHelper().getAchievementsDAO().queryForAll();
             if (achievementsList.isEmpty()) {
                 TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Achievements.class);
@@ -71,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < achievementsList.size(); i++)
                     HelperFactory.getHelper().getAchievementsDAO().create(achievementsList.get(i));
             }
+
             Intent intent = getIntent();
+
             timer = intent.getLongExtra("timer", 0);
             if (timer == 0) timer = System.currentTimeMillis();
             BigDecimal bg = new BigDecimal(timer);
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     ach.start();
                 }
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         startTest.setSoundEffectsEnabled(false);
         achievements.setSoundEffectsEnabled(false);
         exit.setSoundEffectsEnabled(false);
+
         startTest.setOnClickListener(v ->
         {
             click.start();
@@ -129,5 +135,6 @@ public class MainActivity extends AppCompatActivity {
         HelperFactory.releaseHelper();
         super.onStop();
     }
+
 }
 

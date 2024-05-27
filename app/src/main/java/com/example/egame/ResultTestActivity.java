@@ -45,6 +45,7 @@ public class ResultTestActivity extends AppCompatActivity {
         numberWrongAnswer = intent.getIntExtra("numberWrongAnswer", 0);
 
         try {
+
             if (numberRightAnswer == 10 && counter == 10) {
                 List<Achievements> achievementsList = HelperFactory.getHelper().getAchievementsDAO().queryForEq("name", "САПЕРОМ БУДЕШЬ");
                 Achievements achievement = achievementsList.get(0);
@@ -57,6 +58,7 @@ public class ResultTestActivity extends AppCompatActivity {
                     ach.start();
                 }
             }
+
             Result result = HelperFactory.getHelper().getResultDAO().queryForFirst();
             result.setNumberOfCorrectAnswers(result.getNumberOfCorrectAnswers() + numberRightAnswer);
             result.setNumberOfWrongAnswers(result.getNumberOfWrongAnswers() + numberWrongAnswer);
@@ -84,6 +86,7 @@ public class ResultTestActivity extends AppCompatActivity {
                     ach.start();
                 }
             }
+
             if (result.getNumberOfCorrectAnswers() > 0 || result.getNumberOfWrongAnswers() > 0) {
                 double perc = (double) result.getNumberOfCorrectAnswers() / (result.getNumberOfCorrectAnswers() + result.getNumberOfWrongAnswers()) * 100;
                 if (new BigDecimal(perc).compareTo(new BigDecimal(90)) >= 0) {
@@ -99,6 +102,7 @@ public class ResultTestActivity extends AppCompatActivity {
                     }
                 }
             }
+
             timer = intent.getLongExtra("timer", 0);
             if (timer == 0) timer = System.currentTimeMillis();
             BigDecimal bg = new BigDecimal(timer);
